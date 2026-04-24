@@ -1,0 +1,135 @@
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  location_service:
+    image: sathvik2003/quickhaul-location:v2
+    build:
+      context: ./backend
+      dockerfile: services/location_service/Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379/0
+      - AUTH_SERVICE_URL=http://auth_service:8002
+      - BOOKING_SERVICE_URL=http://booking_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notification_service:8004
+      - LOCATION_SERVICE_URL=http://location_service:8001
+      - OTP_SERVICE_URL=http://otp_service:8005
+      - FRONTEND_URL=http://54.87.60.241
+    depends_on:
+      - mongodb
+      - redis
+
+  auth_service:
+    image: sathvik2003/quickhaul-auth:v2
+    build:
+      context: ./backend
+      dockerfile: services/auth_service/Dockerfile
+    ports:
+      - "8002:8002"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379/0
+      - AUTH_SERVICE_URL=http://auth_service:8002
+      - BOOKING_SERVICE_URL=http://booking_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notification_service:8004
+      - LOCATION_SERVICE_URL=http://location_service:8001
+      - OTP_SERVICE_URL=http://otp_service:8005
+      - FRONTEND_URL=http://54.87.60.241
+    env_file: .env
+    depends_on:
+      - mongodb
+      - redis
+
+  booking_service:
+    image: sathvik2003/quickhaul-booking:v2
+    build:
+      context: ./backend
+      dockerfile: services/booking_service/Dockerfile
+    ports:
+      - "8003:8003"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379/0
+      - AUTH_SERVICE_URL=http://auth_service:8002
+      - BOOKING_SERVICE_URL=http://booking_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notification_service:8004
+      - LOCATION_SERVICE_URL=http://location_service:8001
+      - OTP_SERVICE_URL=http://otp_service:8005
+      - FRONTEND_URL=http://54.87.60.241
+    depends_on:
+      - mongodb
+      - redis
+
+  notification_service:
+    image: sathvik2003/quickhaul-notification:v2
+    build:
+      context: ./backend
+      dockerfile: services/notification_service/Dockerfile
+    ports:
+      - "8004:8004"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379/0
+      - AUTH_SERVICE_URL=http://auth_service:8002
+      - BOOKING_SERVICE_URL=http://booking_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notification_service:8004
+      - LOCATION_SERVICE_URL=http://location_service:8001
+      - OTP_SERVICE_URL=http://otp_service:8005
+      - FRONTEND_URL=http://54.87.60.241
+    depends_on:
+      - mongodb
+      - redis
+
+  otp_service:
+    image: sathvik2003/quickhaul-otp:v2
+    build:
+      context: ./backend
+      dockerfile: services/otp_service/Dockerfile
+    ports:
+      - "8005:8005"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379/0
+      - AUTH_SERVICE_URL=http://auth_service:8002
+      - BOOKING_SERVICE_URL=http://booking_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notification_service:8004
+      - LOCATION_SERVICE_URL=http://location_service:8001
+      - OTP_SERVICE_URL=http://otp_service:8005
+      - FRONTEND_URL=http://54.87.60.241
+    depends_on:
+      - mongodb
+      - redis
+
+  frontend:
+    image: sathvik2003/quickhaul-frontend:v3
+    build: ./frontend
+    ports:
+      - "80:80"
+    environment:
+      - VITE_LOCATION_SERVICE_URL=http://location_service:8001
+      - VITE_AUTH_SERVICE_URL=http://auth_service:8002
+      - VITE_BOOKING_SERVICE_URL=http://booking_service:8003
+      - VITE_NOTIFICATION_SERVICE_URL=http://notification_service:8004
+      - VITE_OTP_SERVICE_URL=http://otp_service:8005
+      - VITE_HMR_HOST=54.87.60.241
+    depends_on:
+      - location_service
+      - auth_service
+      - booking_service
+      - notification_service
+      - otp_service
+
+volumes:
+  mongodb_data:
