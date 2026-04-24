@@ -56,3 +56,8 @@ Look for: `Email send result for user@example.com: {'success': False, 'error': '
 - **Symptoms**: Backend was still using `localhost` even though Docker Compose was running.
 - **Root Cause**: The services weren't explicitly told to look for the root `.env` file.
 - **Resolution**: Updated `docker-compose.yml` to include `env_file: .env` for each microservice.
+
+### [Bug #004] 500 Error: ObjectId is not JSON serializable
+- **Symptoms**: `POST /bookings` returns 500. Logs show `TypeError: Object of type ObjectId is not JSON serializable`.
+- **Root Cause**: MongoDB adds an `_id` field of type `ObjectId` to the dictionary. The `json` library cannot serialize this type when saving to Redis.
+- **Resolution**: Converted the `_id` field to a string using `str(booking_data["_id"])` before calling `json.dumps`.

@@ -1,6 +1,4 @@
-"""
-Enhanced Booking Service API with Indian location support and billing
-"""
+
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -255,6 +253,9 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
     
     # Also store in Redis for caching/quick access (1 hour TTL)
     redis_key = f"booking:{booking_id}"
+    # Convert _id to string or remove it so json.dumps doesn't crash
+    if "_id" in booking_data:
+        booking_data["_id"] = str(booking_data["_id"])
     redis_client.setex(redis_key, timedelta(hours=1), json.dumps(booking_data))
     
     # Send notifications (integrated with Notification Service)
