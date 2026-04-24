@@ -11,15 +11,36 @@ import json
 from datetime import datetime, timedelta
 import uuid
 import re
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, EmailStr
+from typing import Optional, List
+import redis
+import json
+from datetime import datetime, timedelta
+import uuid
+import re
 import httpx
 import logging
+import sys
+from pathlib import Path
+from contextlib import asynccontextmanager
+
+# Add backend root to path for shared imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
 from data.indian_locations import get_center_by_id
 from fastapi import Depends
 from shared.security import get_current_user_id
 from shared.config import settings
-from typing import List
+from shared.database import connect_to_db, get_db, close_db
 
-app = FastAPI(title="Booking Service", version="2.0.0")
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    await connect_to_db()
+    yield
+    await close_db()
+
+app = FastAPI(title="Booking Service", version="2.0.0", lifespan=lifespan)
 
 # CORS middleware
 app.add_middleware(
@@ -140,38 +161,31 @@ def get_estimated_delivery(transport_type: str) -> str:
 
 @app.get("/bookings", response_model=List[dict])
 async def get_user_bookings(user_id: str = Depends(get_current_user_id)):
-    """Get all bookings for the authenticated user"""
-    user_key = f"user:{user_id}:bookings"
-    booking_ids = redis_client.lrange(user_key, 0, -1)
+    """Get all bookings for the authenticated user from MongoDB"""
+    db = get_db()
+    cursor = db["bookings"].find({"user_id": user_id}).sort("created_at", -1)
     
     bookings = []
-    for bid in booking_ids:
-        data = redis_client.get(f"booking:{bid}")
-        if data:
-            booking = json.loads(data)
-            # Safe extraction of locations (handles new and legacy structures)
-            locs = booking.get("locations")
-            if locs:
-                f_center = locs["from"].get("center", {})
-                t_center = locs["to"].get("center", {})
-                from_loc = f_center.get("name", str(f_center)) if isinstance(f_center, dict) else str(f_center)
-                to_loc = t_center.get("name", str(t_center)) if isinstance(t_center, dict) else str(t_center)
-            else:
-                # Fallback for older booking format
-                old_loc = booking.get("location", {}).get("center", {})
-                from_loc = old_loc.get("name", "Unknown Hub") if isinstance(old_loc, dict) else str(old_loc)
-                to_loc = "See Details"
+    async for booking in cursor:
+        # Format for frontend
+        locs = booking.get("locations", {})
+        f_center = locs.get("from", {}).get("center", {})
+        t_center = locs.get("to", {}).get("center", {})
+        
+        from_loc = f_center.get("name", str(f_center)) if isinstance(f_center, dict) else str(f_center)
+        to_loc = t_center.get("name", str(t_center)) if isinstance(t_center, dict) else str(t_center)
 
-            bookings.append({
-                "id": booking["booking_id"],
-                "from_location": from_loc,
-                "to_location": to_loc,
-                "transport_type": booking.get("transport", {}).get("type", "Unknown"),
-                "goods_type": booking.get("transport", {}).get("goods_type", "General"),
-                "status": booking["status"],
-                "price": f"₹{booking.get('pricing', {}).get('total_amount', 0)}",
-                "driver_id": booking.get("driver_id")
-            })
+        bookings.append({
+            "id": booking["booking_id"],
+            "from_location": from_loc,
+            "to_location": to_loc,
+            "transport_type": booking.get("transport", {}).get("type", "Unknown"),
+            "goods_type": booking.get("transport", {}).get("goods_type", "General"),
+            "status": booking.get("status", "unknown"),
+            "price": f"₹{booking.get('pricing', {}).get('total_amount', 0)}",
+            "date": booking.get("schedule", {}).get("date"),
+            "time": booking.get("schedule", {}).get("time")
+        })
     return bookings
 
 @app.post("/bookings", response_model=BookingResponse)
@@ -234,19 +248,14 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
         "created_at": datetime.now().isoformat()
     }
     
-    # Store in Redis (in production, use MongoDB)
-    redis_key = f"booking:{booking_id}"
-    redis_client.setex(redis_key, timedelta(days=30), json.dumps(booking_data))
+    # Store in MongoDB for persistence
+    db = get_db()
+    booking_data["user_id"] = user_id
+    await db["bookings"].insert_one(booking_data)
     
-    # Store customer bookings list by phone (legacy)
-    customer_key = f"customer:{booking.phone}:bookings"
-    redis_client.lpush(customer_key, booking_id)
-    redis_client.expire(customer_key, timedelta(days=30))
-
-    # Store user bookings list by user_id from token
-    user_key = f"user:{user_id}:bookings"
-    redis_client.lpush(user_key, booking_id)
-    redis_client.expire(user_key, timedelta(days=30))
+    # Also store in Redis for caching/quick access (1 hour TTL)
+    redis_key = f"booking:{booking_id}"
+    redis_client.setex(redis_key, timedelta(hours=1), json.dumps(booking_data))
     
     # Send notifications (integrated with Notification Service)
     notification_url = settings.notification_service_url
