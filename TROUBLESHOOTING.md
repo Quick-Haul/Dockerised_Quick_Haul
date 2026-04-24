@@ -29,6 +29,15 @@ docker rm -f <container_name>
 docker compose up -d
 ```
 
+### 4. Missing Booking Emails (Priority Debugging)
+**Symptoms**: OTP email is received, but the Booking confirmation email is missing.
+**Reason**: Likely a timeout or SMTP rejection due to the larger HTML body of the booking email.
+**Solution**: Check the Notification Service logs to see the SMTP response:
+```bash
+docker logs dockerised_quick_haul_notification_service_1
+```
+Look for: `Email send result for user@example.com: {'success': False, 'error': '...'}`.
+
 ---
 
 ## 🐞 Bug Fix Log
