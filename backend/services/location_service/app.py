@@ -7,7 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 import redis
 import json
 from datetime import timedelta
+import sys
+from pathlib import Path
 from data.indian_locations import get_all_states, get_districts_by_state, get_centers_by_district
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from shared.config import settings
 
 app = FastAPI(title="Location Service", version="1.0.0")
 
@@ -21,7 +26,7 @@ app.add_middleware(
 )
 
 # Redis connection
-redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+redis_client = redis.from_url(settings.redis_url, db=0, decode_responses=True)
 
 # Cache TTL (1 hour)
 CACHE_TTL = timedelta(hours=1)

@@ -26,7 +26,7 @@ app.add_middleware(
 )
 
 # Redis connection for OTP storage
-redis_client = redis.Redis(host='localhost', port=6379, db=3, decode_responses=True)
+redis_client = redis.from_url(settings.redis_url, db=3, decode_responses=True)
 
 # OTP TTL (10 minutes)
 OTP_TTL = timedelta(minutes=10)

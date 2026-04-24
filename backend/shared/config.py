@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     smtp_from_name: str = "Quick Haul Transits"
     smtp_use_tls: bool = False
     smtp_use_starttls: bool = False
+    frontend_url: str = "http://localhost:5173"
 
     # Service URLs (for inter-service communication)
     auth_service_url: str = "http://127.0.0.1:8002"

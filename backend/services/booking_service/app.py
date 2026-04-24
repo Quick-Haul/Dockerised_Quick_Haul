@@ -31,7 +31,7 @@ app.add_middleware(
 )
 
 # Redis connection
-redis_client = redis.Redis(host='localhost', port=6379, db=1, decode_responses=True)
+redis_client = redis.from_url(settings.redis_url, db=1, decode_responses=True)
 
 # Pricing configuration (Realistic Indian Market Rates based on weight)
 # Weight categories: light, medium, heavy
@@ -497,7 +497,7 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
                 
                 <!-- CTA -->
                 <div class="cta-container">
-                    <a href="https://app.quickhaul.com/track/{booking_id}" class="track-btn">Track Your Shipment</a>
+                    <a href="{settings.frontend_url}/track/{booking_id}" class="track-btn">Track Your Shipment</a>
                 </div>
                 
                 <p style="text-align: center; color: #9ca3af; font-size: 13px; margin-top: 20px;">
@@ -541,7 +541,7 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
                 f"{notification_url}/send-sms",
                 json={
                     "phone": booking.phone,
-                    "message": f"QuickHaul: Booking {booking_id} confirmed. Total: ₹{amount_details['total_amount']}. Track at: app.quickhaul.com/track/{booking_id}"
+                    "message": f"QuickHaul: Booking {booking_id} confirmed. Total: ₹{amount_details['total_amount']}. Track at: {settings.frontend_url}/track/{booking_id}"
                 },
                 timeout=15.0
             )
@@ -632,4 +632,4 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8002)
+    uvicorn.run(app, host="0.0.0.0", port=8003)
