@@ -524,6 +524,7 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
 </html>"""
 
     try:
+        async with httpx.AsyncClient() as client:
             # Send Email (Primary Priority)
             email_resp = await client.post(
                 f"{notification_url}/send-email",
