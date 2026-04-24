@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Transport Booking & Logistics - Phase 1
 
 ## Architecture (modular, microservice-ready)
@@ -157,3 +158,7 @@ Frontend available at `http://127.0.0.1:5173`.
 - Always start backend from `backend/`.
 - If you see Redis connection errors, ensure Redis is running on `localhost:6379` (or update `REDIS_URL` in `backend/.env`).
 - Full issue history and fixes: `docs/issues-log.md`.
+=======
+# Dokerised_Quick_Haul
+Quick Haul project under dockers
+>>>>>>> f3ed34fba7f49e0e878fc29b13acb247de3e1cf5
