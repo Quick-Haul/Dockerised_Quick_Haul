@@ -60,6 +60,23 @@ docker logs dockerised_quick_haul_otp_service_1
 
 ---
 
+## 💾 Physical Data Storage (Host Level)
+
+### MongoDB Data Path
+Your database files are stored physically on the EC2 host at:
+`/var/lib/docker/volumes/dockerised_quick_haul_mongodb_data/_data`
+
+**Command to view files**:
+```bash
+sudo ls -lh /var/lib/docker/volumes/dockerised_quick_haul_mongodb_data/_data
+```
+
+### Redis Data Path
+Redis data (snapshots) are stored at:
+`/var/lib/docker/volumes/dockerised_quick_haul_redis_data/_data` (if configured) or managed internally by Docker.
+
+---
+
 ## 🛠️ Git Workflow (On Local machine)
 
 ### Push changes to EC2
