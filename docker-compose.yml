@@ -43,6 +43,7 @@ services:
       - LOCATION_SERVICE_URL=http://location_service:8001
       - OTP_SERVICE_URL=http://otp_service:8005
       - FRONTEND_URL=http://54.87.60.241
+    env_file: .env
     depends_on:
       - mongodb
       - redis
