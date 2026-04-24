@@ -24,7 +24,7 @@ services:
       - NOTIFICATION_SERVICE_URL=http://notification_service:8004
       - LOCATION_SERVICE_URL=http://location_service:8001
       - OTP_SERVICE_URL=http://otp_service:8005
-      - FRONTEND_URL=http://54.87.60.241:5173
+      - FRONTEND_URL=http://54.87.60.241
     depends_on:
       - mongodb
       - redis
@@ -42,7 +42,7 @@ services:
       - NOTIFICATION_SERVICE_URL=http://notification_service:8004
       - LOCATION_SERVICE_URL=http://location_service:8001
       - OTP_SERVICE_URL=http://otp_service:8005
-      - FRONTEND_URL=http://54.87.60.241:5173
+      - FRONTEND_URL=http://54.87.60.241
     depends_on:
       - mongodb
       - redis
@@ -60,7 +60,7 @@ services:
       - NOTIFICATION_SERVICE_URL=http://notification_service:8004
       - LOCATION_SERVICE_URL=http://location_service:8001
       - OTP_SERVICE_URL=http://otp_service:8005
-      - FRONTEND_URL=http://54.87.60.241:5173
+      - FRONTEND_URL=http://54.87.60.241
     depends_on:
       - mongodb
       - redis
@@ -78,7 +78,7 @@ services:
       - NOTIFICATION_SERVICE_URL=http://notification_service:8004
       - LOCATION_SERVICE_URL=http://location_service:8001
       - OTP_SERVICE_URL=http://otp_service:8005
-      - FRONTEND_URL=http://54.87.60.241:5173
+      - FRONTEND_URL=http://54.87.60.241
     depends_on:
       - mongodb
       - redis
@@ -96,7 +96,7 @@ services:
       - NOTIFICATION_SERVICE_URL=http://notification_service:8004
       - LOCATION_SERVICE_URL=http://location_service:8001
       - OTP_SERVICE_URL=http://otp_service:8005
-      - FRONTEND_URL=http://54.87.60.241:5173
+      - FRONTEND_URL=http://54.87.60.241
     depends_on:
       - mongodb
       - redis
@@ -104,7 +104,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "5173:5173"
+      - "80:80"
     environment:
       - VITE_LOCATION_SERVICE_URL=http://location_service:8001
       - VITE_AUTH_SERVICE_URL=http://auth_service:8002
