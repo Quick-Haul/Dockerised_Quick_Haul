@@ -524,27 +524,28 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
 </html>"""
 
     try:
-        async with httpx.AsyncClient() as client:
-            # Send Email
-            await client.post(
+            # Send Email (Primary Priority)
+            email_resp = await client.post(
                 f"{notification_url}/send-email",
                 json={
                     "to_email": booking.email,
                     "subject": f"QuickHaul Booking Confirmation: {booking_id}",
                     "body": email_body
                 },
-                timeout=15.0
+                timeout=20.0
             )
+            print(f"Email service response: {email_resp.status_code}")
             
-            # Send SMS
-            await client.post(
+            # Send SMS (Secondary Priority)
+            sms_resp = await client.post(
                 f"{notification_url}/send-sms",
                 json={
                     "phone": booking.phone,
                     "message": f"QuickHaul: Booking {booking_id} confirmed. Total: ₹{amount_details['total_amount']}. Track at: {settings.frontend_url}/track/{booking_id}"
                 },
-                timeout=15.0
+                timeout=10.0
             )
+            print(f"SMS service response: {sms_resp.status_code}")
             print(f"Notifications dispatched for {booking_id}")
     except Exception as e:
         print(f"Failed to send notifications: {e}")

@@ -127,11 +127,9 @@ async def send_email_via_smtp(to_email: str, subject: str, body: str) -> dict:
 @app.post("/send-email")
 async def send_email(payload: EmailRequest):
     """Send email notification"""
+    logger.info(f"Received request to send email to {payload.to_email}")
     result = await send_email_via_smtp(payload.to_email, payload.subject, payload.body)
-    
-    # Always log to console for debugging
-    logger.info(f"\n[EMAIL] To: {payload.to_email}\nSubject: {payload.subject}\nBody: {payload.body}\n")
-    
+    logger.info(f"Email send result for {payload.to_email}: {result}")
     return result
 
 @app.post("/send-sms")
