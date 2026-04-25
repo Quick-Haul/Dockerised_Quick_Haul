@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY services/otp_service/ ./services/otp_service/
+COPY shared/ ./shared/
 
 CMD ["uvicorn", "services.otp_service.app:app", "--host", "0.0.0.0", "--port", "8005"]
