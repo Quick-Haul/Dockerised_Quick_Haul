@@ -14,5 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY services/otp_service/ ./services/otp_service/
 COPY shared/ ./shared/
+COPY data/ ./data/
 
 CMD ["uvicorn", "services.otp_service.app:app", "--host", "0.0.0.0", "--port", "8005"]

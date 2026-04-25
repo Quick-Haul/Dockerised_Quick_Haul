@@ -14,5 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY services/auth_service/ ./services/auth_service/
 COPY shared/ ./shared/
+COPY data/ ./data/
 
 CMD ["uvicorn", "services.auth_service.main:app", "--host", "0.0.0.0", "--port", "8002"]

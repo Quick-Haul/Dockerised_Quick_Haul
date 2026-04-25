@@ -14,5 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY services/notification_service/ ./services/notification_service/
 COPY shared/ ./shared/
+COPY data/ ./data/
 
 CMD ["uvicorn", "services.notification_service.app:app", "--host", "0.0.0.0", "--port", "8004"]
