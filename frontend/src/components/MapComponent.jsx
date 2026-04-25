@@ -47,7 +47,7 @@ const MapComponent = ({ center, zoom = 13, markers = [], height = "300px" }) => 
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <ChangeView center={mapCenter} zoom={zoom} />
-        {markers.map((marker, idx) => (
+        {Array.isArray(markers) && markers.map((marker, idx) => (
           <Marker key={idx} position={[marker.lat, marker.lng]}>
             {marker.label && (
               <Popup>
