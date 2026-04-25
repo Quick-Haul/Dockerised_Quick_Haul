@@ -80,51 +80,51 @@ DISTRICTS = {
 CENTERS = {
     "karnataka": {
         "bangalore": [
-            {"id": "blr_majestic", "name": "Majestic Central Hub", "address": "Tank Bund Road, Majestic, Bangalore", "phone": "080-22223333"},
-            {"id": "blr_whitefield", "name": "Whitefield Logistics Center", "address": "ITPL Main Road, Whitefield", "phone": "080-44445555"},
+            {"id": "blr_majestic", "name": "Majestic Central Hub", "address": "Tank Bund Road, Majestic, Bangalore", "phone": "080-22223333", "lat": 12.9767, "lng": 77.5713},
+            {"id": "blr_whitefield", "name": "Whitefield Logistics Center", "address": "ITPL Main Road, Whitefield", "phone": "080-44445555", "lat": 12.9698, "lng": 77.7500},
         ],
         "mysore": [
-            {"id": "mys_suburb", "name": "Mysore Suburb Hub", "address": "Lashkar Mohalla, Mysore", "phone": "0821-2525252"},
+            {"id": "mys_suburb", "name": "Mysore Suburb Hub", "address": "Lashkar Mohalla, Mysore", "phone": "0821-2525252", "lat": 12.3072, "lng": 76.6552},
         ],
         "hubli": [
-            {"id": "hubli_main", "name": "Hubli Junction Hub", "address": "Station Road, Hubli", "phone": "0836-2350001"},
+            {"id": "hubli_main", "name": "Hubli Junction Hub", "address": "Station Road, Hubli", "phone": "0836-2350001", "lat": 15.3477, "lng": 75.1481},
         ],
         "mangalore": [
-            {"id": "mng_port", "name": "Mangalore Port Hub", "address": "Panambur, Mangalore", "phone": "0824-2407222"},
+            {"id": "mng_port", "name": "Mangalore Port Hub", "address": "Panambur, Mangalore", "phone": "0824-2407222", "lat": 12.9234, "lng": 74.8211},
         ],
     },
     "maharashtra": {
         "mumbai": [
-            {"id": "mum_andheri", "name": "Andheri Cargo Hub", "address": "Andheri East, Mumbai", "phone": "022-28282828"},
-            {"id": "mum_vashi", "name": "Vashi Distribution Center", "address": "Sector 17, Vashi, Navi Mumbai", "phone": "022-27272727"},
+            {"id": "mum_andheri", "name": "Andheri Cargo Hub", "address": "Andheri East, Mumbai", "phone": "022-28282828", "lat": 19.1136, "lng": 72.8697},
+            {"id": "mum_vashi", "name": "Vashi Distribution Center", "address": "Sector 17, Vashi, Navi Mumbai", "phone": "022-27272727", "lat": 19.0745, "lng": 72.9978},
         ],
         "pune": [
-            {"id": "pune_hinjewadi", "name": "Hinjewadi Tech Hub", "address": "Phase 1, Hinjewadi, Pune", "phone": "020-66667777"},
+            {"id": "pune_hinjewadi", "name": "Hinjewadi Tech Hub", "address": "Phase 1, Hinjewadi, Pune", "phone": "020-66667777", "lat": 18.5913, "lng": 73.7389},
         ],
     },
     "delhi": {
         "new_delhi": [
-            {"id": "del_connaught", "name": "CP Distribution Point", "address": "Connaught Place, New Delhi", "phone": "011-23232323"},
+            {"id": "del_connaught", "name": "CP Distribution Point", "address": "Connaught Place, New Delhi", "phone": "011-23232323", "lat": 28.6328, "lng": 77.2197},
         ],
     },
     "andhra_pradesh": {
         "visakhapatnam": [
-            {"id": "viz_port", "name": "Vizag Port Logistics", "address": "Port Area, Visakhapatnam", "phone": "0891-2525252"},
+            {"id": "viz_port", "name": "Vizag Port Logistics", "address": "Port Area, Visakhapatnam", "phone": "0891-2525252", "lat": 17.6868, "lng": 83.2185},
         ],
     },
     "tamil_nadu": {
         "chennai": [
-            {"id": "chn_guindy", "name": "Guindy Industrial Hub", "address": "Guindy, Chennai", "phone": "044-22224444"},
+            {"id": "chn_guindy", "name": "Guindy Industrial Hub", "address": "Guindy, Chennai", "phone": "044-22224444", "lat": 13.0067, "lng": 80.2206},
         ],
     },
     "telangana": {
         "hyderabad": [
-            {"id": "hyd_hitech", "name": "HITEC City Hub", "address": "Madhapur, Hyderabad", "phone": "040-23110000"},
+            {"id": "hyd_hitech", "name": "HITEC City Hub", "address": "Madhapur, Hyderabad", "phone": "040-23110000", "lat": 17.4483, "lng": 78.3915},
         ],
     },
     "west_bengal": {
         "kolkata": [
-            {"id": "kol_saltlake", "name": "Salt Lake Sector V Hub", "address": "Salt Lake, Kolkata", "phone": "033-23570000"},
+            {"id": "kol_saltlake", "name": "Salt Lake Sector V Hub", "address": "Salt Lake, Kolkata", "phone": "033-23570000", "lat": 22.5735, "lng": 88.4331},
         ],
     },
 }

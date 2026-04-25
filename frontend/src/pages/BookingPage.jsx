@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import bookingApi, { locationApi } from "../api/bookingApi";
 import { useAuth } from "../context/AuthContext";
+import MapComponent from "../components/MapComponent";
 
 const initialForm = {
   name: "",
@@ -318,6 +319,25 @@ function BookingPage() {
     </>
   );
 
+  const getMapMarkers = () => {
+    const markers = [];
+    if (selectedFromCenter && selectedFromCenter.lat && selectedFromCenter.lng) {
+      markers.push({ 
+        lat: selectedFromCenter.lat, 
+        lng: selectedFromCenter.lng, 
+        label: `Pickup: ${selectedFromCenter.name}` 
+      });
+    }
+    if (selectedToCenter && selectedToCenter.lat && selectedToCenter.lng) {
+      markers.push({ 
+        lat: selectedToCenter.lat, 
+        lng: selectedToCenter.lng, 
+        label: `Delivery: ${selectedToCenter.name}` 
+      });
+    }
+    return markers;
+  };
+
   return (
     <>
       {/* Global style to fix dropdown option text visibility */}
@@ -459,6 +479,18 @@ function BookingPage() {
               <div style={sectionTitle}>📍 DELIVERY LOCATION (TO)</div>
               {renderLocationPicker("to", states, toDistricts, toCenters, selectedToCenter, loadingStates, loadingDistricts, loadingCenters)}
             </div>
+
+            {/* ── Route Preview Map ─────── */}
+            {(selectedFromCenter || selectedToCenter) && (
+              <div style={{ marginBottom: "2rem" }}>
+                <div style={sectionTitle}>🗺️ ROUTE PREVIEW</div>
+                <MapComponent 
+                  markers={getMapMarkers()} 
+                  height="350px"
+                  center={selectedFromCenter ? [selectedFromCenter.lat, selectedFromCenter.lng] : null}
+                />
+              </div>
+            )}
 
             {/* ── Booking Details ─────── */}
             <div style={{ marginBottom: "2rem" }}>
