@@ -1,21 +1,22 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import * as L from 'leaflet';
+import L from 'leaflet';
 import { useEffect } from 'react';
 
 // Fix for default marker icon in production builds
-// This is often why people get errors or missing icons
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-let DefaultIcon = L.icon({
+const DefaultIcon = L.icon ? L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
-});
+}) : null;
 
-L.Marker.prototype.options.icon = DefaultIcon;
+if (L.Marker && L.Marker.prototype) {
+  L.Marker.prototype.options.icon = DefaultIcon;
+}
 
 // Helper component to update map view when center changes
 function ChangeView({ center, zoom }) {
@@ -35,9 +36,9 @@ const MapComponent = ({ center, zoom = 13, markers = [], height = "300px" }) => 
 
   return (
     <div style={{ height, width: '100%', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(61, 159, 255, 0.3)' }}>
-      <MapContainer 
-        center={mapCenter} 
-        zoom={zoom} 
+      <MapContainer
+        center={mapCenter}
+        zoom={zoom}
         scrollWheelZoom={false}
         style={{ height: '100%', width: '100%' }}
       >
