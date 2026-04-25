@@ -32,7 +32,7 @@ function ChangeView({ center, zoom }) {
 const MapComponent = ({ center, zoom = 13, markers = [], height = "300px" }) => {
   // Default to Bangalore if no center provided
   const defaultCenter = [12.9716, 77.5946];
-  const mapCenter = center || (markers.length > 0 ? [markers[0].lat, markers[0].lng] : defaultCenter);
+  const mapCenter = center || (markers.length > 0 && markers[0].lat && markers[0].lng ? [markers[0].lat, markers[0].lng] : defaultCenter);
 
   return (
     <div style={{ height, width: '100%', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(61, 159, 255, 0.3)' }}>
@@ -47,7 +47,7 @@ const MapComponent = ({ center, zoom = 13, markers = [], height = "300px" }) => 
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <ChangeView center={mapCenter} zoom={zoom} />
-        {Array.isArray(markers) && markers.map((marker, idx) => (
+        {Array.isArray(markers) && markers.filter(m => m.lat && m.lng).map((marker, idx) => (
           <Marker key={idx} position={[marker.lat, marker.lng]}>
             {marker.label && (
               <Popup>

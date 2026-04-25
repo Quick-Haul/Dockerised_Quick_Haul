@@ -142,7 +142,9 @@ for state_id, state_districts in DISTRICTS.items():
                     "id": f"{district_id}_hub",
                     "name": f"{district['name']} Regional Hub",
                     "address": f"Main Market Area, {district['name']}",
-                    "phone": f"0{len(district_id)}-55554444"
+                    "phone": f"0{len(district_id)}-55554444",
+                    "lat": 12.9716,
+                    "lng": 77.5946
                 }
             ]
 
