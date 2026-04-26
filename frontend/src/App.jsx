@@ -4,6 +4,7 @@ import { useAuth } from "./context/AuthContext";
 import BookingPage from "./pages/BookingPage";
 import HistoryPage from "./pages/HistoryPage";
 import LoginRegisterPage from "./pages/LoginRegisterPage";
+import PaymentPage from "./pages/PaymentPage";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -35,6 +36,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<BookingPage />} />
                 <Route path="/history" element={<HistoryPage />} />
+                <Route path="/payment/:payment_id" element={<PaymentPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </>

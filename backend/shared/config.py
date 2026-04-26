@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     notification_service_url: str = "http://127.0.0.1:8004"
     location_service_url: str = "http://127.0.0.1:8001"
     otp_service_url: str = "http://127.0.0.1:8005"
+    payment_service_url: str = "http://payment_service:8006"
 
     model_config = SettingsConfigDict(
         env_file=str(Path(__file__).parent.parent / ".env"),
