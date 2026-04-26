@@ -58,8 +58,8 @@ const PaymentPage = () => {
     return (
       <div style={containerStyle}>
         <div style={cardStyle}>
-          <h2 style={{...titleStyle, color: "#ff8a92"}}>Error</h2>
-          <p style={{color: "rgba(220, 232, 247, 0.8)"}}>{error}</p>
+          <h2 style={{ ...titleStyle, color: "#ff8a92" }}>Error</h2>
+          <p style={{ color: "rgba(220, 232, 247, 0.8)" }}>{error}</p>
           <button onClick={() => navigate("/")} style={buttonStyle}>Back to Home</button>
         </div>
       </div>
@@ -79,7 +79,7 @@ const PaymentPage = () => {
           100% { transform: scale(1); opacity: 0.8; }
         }
       `}</style>
-      
+
       <div style={cardStyle}>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>💳</div>
@@ -131,7 +131,7 @@ const PaymentPage = () => {
               >
                 {processing ? "Processing..." : "Pay Now"}
               </button>
-              
+
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                 <button
                   disabled={processing}
@@ -252,3 +252,4 @@ const statusCardStyle = (type) => ({
 });
 
 export default PaymentPage;
+//
