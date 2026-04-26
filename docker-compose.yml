@@ -129,7 +129,7 @@ services:
       - quickhaul-network
 
   frontend:
-    image: sathvik2003/quickhaul-frontend:v12
+    image: sathvik2003/quickhaul-frontend:v9
     container_name: quickhaul-frontend
     ports:
       - "80:80"
