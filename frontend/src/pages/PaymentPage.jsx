@@ -252,4 +252,3 @@ const statusCardStyle = (type) => ({
 });
 
 export default PaymentPage;
-//

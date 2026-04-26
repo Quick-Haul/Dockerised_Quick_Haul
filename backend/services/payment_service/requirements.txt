@@ -3,5 +3,4 @@ uvicorn
 motor
 pydantic
 pydantic-settings
-motor-python
 python-dotenv
