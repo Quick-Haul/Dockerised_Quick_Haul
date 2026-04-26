@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from routes.payment import router as payment_router
 import uvicorn
-import os
+import sys
+from pathlib import Path
+
+# Add backend root to path for shared imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
 from dotenv import load_dotenv
 
 load_dotenv()

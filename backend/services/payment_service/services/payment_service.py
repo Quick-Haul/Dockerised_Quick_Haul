@@ -6,13 +6,14 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime
 from models.payment_model import PaymentDB, PaymentCreate
 from typing import Optional
+from shared.config import settings
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "quick_haul")
+MONGO_URI = settings.mongo_uri
+MONGO_DB_NAME = settings.mongo_db_name
 
 class PaymentService:
     def __init__(self):

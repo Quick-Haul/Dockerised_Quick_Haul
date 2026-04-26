@@ -1,32 +1,36 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
-
+from typing import Optional
 
 class Settings(BaseSettings):
-    app_name: str = "Transport Booking API"
-    env: str = "development"
-    secret_key: str = "change_me"
-    access_token_expire_minutes: int = 120
-    mongo_uri: str = "mongodb://localhost:27017"
-    mongo_db_name: str = "transport_booking"
-    redis_url: str = "redis://localhost:6379/0"
-    smtp_enabled: bool = False
-    smtp_host: str = "127.0.0.1"
-    smtp_port: int = 1025
-    smtp_username: str = ""
-    smtp_password: str = ""
-    smtp_from_email: str = "noreply@quickhaul.local"
-    smtp_from_name: str = "Quick Haul Transits"
-    smtp_use_tls: bool = False
-    smtp_use_starttls: bool = False
+    app_name: str = "QuickHaul Transport API"
+    env: str = "production"
+    secret_key: str = "hello_welcome_to_quick_haul_transports"
+    access_token_expire_minutes: int = 1440
     frontend_url: str = "http://localhost:5173"
 
-    # Service URLs (for inter-service communication)
-    auth_service_url: str = "http://127.0.0.1:8002"
-    booking_service_url: str = "http://127.0.0.1:8003"
-    notification_service_url: str = "http://127.0.0.1:8004"
-    location_service_url: str = "http://127.0.0.1:8001"
-    otp_service_url: str = "http://127.0.0.1:8005"
+    # Database & Cache
+    mongo_uri: str = "mongodb://mongodb:27017"
+    mongo_db_name: str = "quick_haul"
+    redis_url: str = "redis://redis:6379/0"
+
+    # SMTP Settings
+    smtp_enabled: bool = True
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    smtp_username: str = "sathviknbmath@gmail.com"
+    smtp_password: str = "qgao dqvk jiut ktyhr"
+    smtp_from_email: str = "sathviknbmath@gmail.com"
+    smtp_from_name: str = "Quick Haul Support"
+    smtp_use_tls: bool = False
+    smtp_use_starttls: bool = True
+
+    # Service URLs
+    location_service_url: str = "http://location_service:8001"
+    auth_service_url: str = "http://auth_service:8002"
+    booking_service_url: str = "http://booking_service:8003"
+    notification_service_url: str = "http://notification_service:8004"
+    otp_service_url: str = "http://otp_service:8005"
     payment_service_url: str = "http://payment_service:8006"
 
     model_config = SettingsConfigDict(
@@ -34,6 +38,5 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8", 
         extra="ignore"
     )
-
 
 settings = Settings()
