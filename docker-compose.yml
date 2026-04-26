@@ -105,6 +105,23 @@ services:
     networks:
       - quickhaul-network
 
+  payment_service:
+    build:
+      context: ./backend
+      dockerfile: services/payment_service/Dockerfile
+    container_name: payment-service
+    ports:
+      - "8006:8006"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379/0
+    env_file: ./backend/.env
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - quickhaul-network
+
   frontend:
     build:
       context: ./frontend
@@ -117,12 +134,14 @@ services:
       - VITE_BOOKING_API_URL=/api/bookings
       - VITE_NOTIFICATION_API_URL=/api/notifications
       - VITE_OTP_API_URL=/api/otp
+      - VITE_PAYMENT_API_URL=/api/payments
     depends_on:
       - location_service
       - auth_service
       - booking_service
       - notification_service
       - otp_service
+      - payment_service
     networks:
       - quickhaul-network
 
