@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes.payment import router as payment_router
+from services.payment_service.routes.payment import router as payment_router
 import uvicorn
 import sys
 from pathlib import Path

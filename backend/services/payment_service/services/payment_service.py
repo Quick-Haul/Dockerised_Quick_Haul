@@ -4,7 +4,7 @@ import random
 import logging
 from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime
-from models.payment_model import PaymentDB, PaymentCreate
+from services.payment_service.models.payment_model import PaymentDB, PaymentCreate
 from typing import Optional
 from shared.config import settings
 

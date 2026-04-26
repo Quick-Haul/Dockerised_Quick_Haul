@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
-from models.payment_model import PaymentCreate, PaymentDB
-from services.payment_service import payment_service
+from services.payment_service.models.payment_model import PaymentCreate, PaymentDB
+from services.payment_service.services.payment_service import payment_service
 
 router = APIRouter()
 
