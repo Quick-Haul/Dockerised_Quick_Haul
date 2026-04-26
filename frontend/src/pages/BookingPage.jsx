@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import bookingApi, { locationApi } from "../api/bookingApi";
 import { useAuth } from "../context/AuthContext";
 
@@ -72,6 +73,7 @@ const sectionTitle = {
 
 function BookingPage() {
   const { userId } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState(initialForm);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -260,8 +262,16 @@ function BookingPage() {
 
       const response = await bookingApi.post("/bookings", payload);
       setMessage(
-        `Booking ${response.data.booking_id} created successfully! Total: ₹${response.data.total_amount}`
+        `Booking ${response.data.booking_id} created successfully! Redirecting to payment...`
       );
+
+      // Redirect to payment page after a short delay
+      if (response.data.payment_id) {
+        setTimeout(() => {
+          navigate(`/payment/${response.data.payment_id}`);
+        }, 1500);
+      }
+
       setForm(initialForm);
       setSelectedFromCenter(null);
       setSelectedToCenter(null);

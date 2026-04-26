@@ -97,6 +97,7 @@ class BookingResponse(BaseModel):
     base_amount: float
     gst_amount: float
     estimated_delivery: str
+    payment_id: Optional[str] = None
 
 def validate_phone(phone: str) -> bool:
     """Validate Indian mobile number"""
@@ -241,7 +242,7 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
             "weight_category": booking.weight_category
         },
         "pricing": amount_details,
-        "status": "confirmed",
+        "status": "AWAITING_PAYMENT",
         "estimated_delivery": get_estimated_delivery(booking.transport_type),
         "created_at": datetime.now().isoformat()
     }
@@ -561,13 +562,36 @@ async def create_booking(booking: BookingRequest, user_id: str = Depends(get_cur
     except Exception as e:
         print(f"Failed to send notifications: {e}")
     
+    # Create Payment Order
+    payment_id = None
+    try:
+        async with httpx.AsyncClient() as client:
+            payment_resp = await client.post(
+                f"{settings.payment_service_url}/create-order",
+                json={
+                    "booking_id": booking_id,
+                    "amount": amount_details["total_amount"]
+                }
+            )
+            if payment_resp.status_code == 200:
+                payment_data = payment_resp.json()
+                payment_id = payment_data.get("payment_id")
+                # Update booking with payment_id
+                await db["bookings"].update_one(
+                    {"booking_id": booking_id},
+                    {"$set": {"payment_id": payment_id}}
+                )
+    except Exception as e:
+        print(f"Failed to create payment order: {e}")
+
     return BookingResponse(
         booking_id=booking_id,
-        status="confirmed",
+        status="AWAITING_PAYMENT",
         total_amount=amount_details["total_amount"],
         base_amount=amount_details["base_amount"],
         gst_amount=amount_details["gst_amount"],
-        estimated_delivery=get_estimated_delivery(booking.transport_type)
+        estimated_delivery=get_estimated_delivery(booking.transport_type),
+        payment_id=payment_id
     )
 
 @app.get("/bookings/{booking_id}")
