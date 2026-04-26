@@ -21,6 +21,7 @@ services:
     build:
       context: ./backend
       dockerfile: services/location_service/Dockerfile
+    image: sathvik2003/quickhaul-location:v6
     container_name: location-service
     ports:
       - "8001:8001"
@@ -39,6 +40,7 @@ services:
     build:
       context: ./backend
       dockerfile: services/auth_service/Dockerfile
+    image: sathvik2003/quickhaul-auth:v6
     container_name: auth-service
     ports:
       - "8002:8002"
@@ -57,6 +59,7 @@ services:
     build:
       context: ./backend
       dockerfile: services/booking_service/Dockerfile
+    image: sathvik2003/quickhaul-booking:v6
     container_name: booking-service
     ports:
       - "8003:8003"
@@ -75,6 +78,7 @@ services:
     build:
       context: ./backend
       dockerfile: services/notification_service/Dockerfile
+    image: sathvik2003/quickhaul-notification:v6
     container_name: notification-service
     ports:
       - "8004:8004"
@@ -92,6 +96,7 @@ services:
     build:
       context: ./backend
       dockerfile: services/otp_service/Dockerfile
+    image: sathvik2003/quickhaul-otp:v6
     container_name: otp-service
     ports:
       - "8005:8005"
@@ -109,6 +114,7 @@ services:
     build:
       context: ./backend
       dockerfile: services/payment_service/Dockerfile
+    image: sathvik2003/quickhaul-payment:v6
     container_name: payment-service
     ports:
       - "8006:8006"
@@ -123,7 +129,7 @@ services:
       - quickhaul-network
 
   frontend:
-    image: sathvik2003/quickhaul-frontend:v9
+    image: sathvik2003/quickhaul-frontend:v12
     container_name: quickhaul-frontend
     ports:
       - "80:80"
